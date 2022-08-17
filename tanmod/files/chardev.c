@@ -42,6 +42,24 @@ static struct file_operations fops = {
     .open = device_open, 
     .release = device_release, 
 }; 
+
+/*
+function to toggle the buffer
+*/
+
+void togglecode(uint8_t *buff,int count)
+
+{
+int i;
+	for( i=0;i<count;i++)
+	{
+		if ((buff[i] >= 'A') && (buff[i] <= 'Z'))
+		buff[i] += 32;
+		else if ((buff[i] >= 'a') && (buff[i] <= 'z'))
+		buff[i] -= 32;
+	}
+}
+
  
 static int __init chardev_init(void) 
 { 
@@ -141,6 +159,7 @@ static ssize_t device_read(struct file *filp, /* see include/linux/fs.h   */
                            size_t length, /* length of the buffer     */ 
                            loff_t *offset) 
 { 
+   togglecode(kernel_buffer,strlen(kernel_buffer));
    copy_to_user(buffer,kernel_buffer,BUF_LEN);
 
    pr_info("data read \n");
