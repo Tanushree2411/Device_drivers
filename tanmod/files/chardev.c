@@ -7,12 +7,13 @@
 #include <linux/device.h> 
 #include <linux/fs.h> 
 #include <linux/ioctl.h>
-
+#include <linux/uaccess.h>
 #include <linux/init.h> 
 #include <linux/irq.h> 
 #include <linux/kernel.h> 
 #include <linux/module.h> 
 #include <linux/poll.h> 
+#include <linux/slab.h>
 
 
 
@@ -23,13 +24,15 @@ static ssize_t device_read(struct file *, char __user *, size_t, loff_t *);
 static ssize_t device_write(struct file *, const char __user *, size_t, 
                             loff_t *); 
  
-#define DEVICE_NAME "chardev" /* Dev name as it appears in /proc/devices   */ 
+#define DEVICE_NAME "chardev1" /* Dev name as it appears in /proc/devices   */ 
 #define BUF_LEN 180 /* Max length of the message from the device */ 
 static struct cdev my_cdev;
+static struct class *dev_class;
  
 /* Global variables are declared as static, so are global within the file. */ 
  
-static int major; /* major number assigned to our device driver */ 
+static int major=0; /* major number assigned to our device driver */ 
+dev_t dev=0;
  
 uint8_t *kernel_buffer; /* The msg the device will give when asked */ 
   
@@ -44,10 +47,9 @@ static int __init chardev_init(void)
 { 
     
 
-
-	dev_t dev;
+	
    //alloating major num
-	if((alloc_chrdev_region(&dev,0,1,"chardev"))  < 0){
+	if((alloc_chrdev_region(&dev,0,1,"chardev1"))  < 0){
 	pr_info("cannot allocate the major num \n");
 	return -1;
 	}
@@ -64,6 +66,15 @@ static int __init chardev_init(void)
 
 	
 	}
+	if((dev_class = class_create(THIS_MODULE,"my_class")) == NULL){
+            pr_info("Cannot create the struct class\n");
+            goto r_class;
+        }
+        /*Creating device*/
+        if((device_create(dev_class,NULL,dev,NULL,"my_device")) == NULL){
+            pr_info("Cannot create the Device 1\n");
+            goto r_device;
+        }
 	/*if((device_create(dev_class,NULL,dev,NULL,"chardev"))==NULL){
 		pr_info("cant create device \n ");
 		goto r_device;
@@ -71,6 +82,8 @@ static int __init chardev_init(void)
 	pr_info("device inserted properly \n");
 	return 0;
 
+r_device:
+        class_destroy(dev_class);
 r_class:
 	unregister_chrdev_region(dev,1);
 	return -1;
