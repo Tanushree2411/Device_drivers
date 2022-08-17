@@ -1,5 +1,5 @@
 /* 
- * chardev.c: Creates a read-write char device
+ * chardev.c: Creates a read-write char device and toggle the buffer
  */ 
  
 #include <linux/cdev.h> 
