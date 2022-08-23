@@ -1,3 +1,7 @@
+obj-m += procfs1_read.o
+obj-m += procfs1_read_and_write.o
+obj-m += procfs_seq.o
+obj-m += sysfs.o
 obj-m += chardev.o
 obj-m += tanmod_driver.o
 obj-m += startstop.o
