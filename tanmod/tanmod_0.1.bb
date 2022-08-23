@@ -9,6 +9,10 @@ SRC_URI = "file://Makefile \
 	   file://chardev.c \
 	   file://start.c \
            file://stop.c \
+	   file://procfs1_read.c \
+           file://procfs1_read_and_write.c \
+           file://sysfs.c \
+           file://procfs_seq.c \
            file://COPYING \
           "
 
