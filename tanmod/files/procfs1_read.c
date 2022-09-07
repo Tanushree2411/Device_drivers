@@ -58,15 +58,20 @@ static const struct file_operations proc_file_fops = {
  
 static int __init procfs1_init(void) 
 { 
-    our_proc_file = proc_create(procfs_name, 0644, NULL, &proc_file_fops); 
+	pr_info("inside init\n");
+    //our_proc_file = proc_create(procfs_name, 0644, NULL, &proc_file_fops); 
+    our_proc_file = NULL;
     if (NULL == our_proc_file) { 
-        proc_remove(our_proc_file); 
+       // proc_remove(our_proc_file); 
+       //
         pr_alert("Error:Could not initialize /proc/%s\n", procfs_name); 
+	pr_info("b4 nomem \n");
         return -ENOMEM; 
-    } 
- 
-    pr_info("/proc/%s created\n", procfs_name); 
-    return 0; 
+   } 
+    else
+    {
+  pr_info("/proc/%s created\n", procfs_name); 
+    return 0; }
 } 
  
 static void __exit procfs1_exit(void) 

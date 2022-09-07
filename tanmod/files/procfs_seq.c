@@ -27,7 +27,7 @@ static void *my_seq_start(struct seq_file *s, loff_t *pos)
     /* beginning a new sequence? */ 
     if (*pos == 0) { 
         /* yes => return a non null value to begin the sequence */ 
-        pr_info("inside if\n");
+  //      pr_info("inside if\n");
 	 return &counter; 
     } 
  

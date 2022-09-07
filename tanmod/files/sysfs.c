@@ -3,7 +3,7 @@
  */ 
 #include <linux/fs.h> 
 #include <linux/init.h> 
-#include <linux/kobject.h> 
+#include <linux/kobject.h> //for struct kobject 
 #include <linux/module.h> 
 #include <linux/string.h> 
 #include <linux/sysfs.h> 
@@ -16,6 +16,7 @@ static int myvariable = 0;
 static ssize_t myvariable_show(struct kobject *kobj, 
                                struct kobj_attribute *attr, char *buf) 
 { 
+	pr_info("goin inside show\n");
     return sprintf(buf, "%d\n", myvariable); 
 } 
  
@@ -23,6 +24,7 @@ static ssize_t myvariable_store(struct kobject *kobj,
                                 struct kobj_attribute *attr, char *buf, 
                                 size_t count) 
 { 
+	pr_info("goin inside store \n");
     sscanf(buf, "%du", &myvariable); 
     return count; 
 } 
@@ -38,7 +40,7 @@ static int __init mymodule_init(void)
  
     mymodule = kobject_create_and_add("mymodule", kernel_kobj); //creates a kobject structure dynamically and registers it with sysfs. 
     if (!mymodule) 
-        return -ENOMEM; 
+      return -ENOMEM; 
  
     error = sysfs_create_file(mymodule, &myvariable_attribute.attr); //create an attribute file for an object.
     if (error) { 
