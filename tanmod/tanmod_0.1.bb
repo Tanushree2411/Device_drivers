@@ -13,6 +13,16 @@ SRC_URI = "file://Makefile \
            file://procfs1_read_and_write.c \
            file://sysfs.c \
            file://procfs_seq.c \
+           file://ioctl.c \
+           file://mutex.c \
+           file://spinlock.c \
+           file://read_write_spinlock.c \
+           file://atomic_op.c \
+           file://tasklet.c \
+           file://tasklet_with_interrupt.c \
+           file://tasklet_dynamic.c \
+           file://workqueue_static.c \
+           file://chardev1.h \
            file://COPYING \
           "
 
